@@ -1,12 +1,14 @@
 ﻿using H_ECK.GameElements;
 using H_ECK.Pieces;
 using System;
+using System.Collections.Generic;
 
 namespace H_ECK.BoardElements
 {
     class Board
     {
         public Field[][] Fields { get; set; }
+        public bool EnPassantPossible { get; set; }
 
         public Board()
         {
@@ -18,6 +20,7 @@ namespace H_ECK.BoardElements
                 for (int j = 0; j < 8; j++)
                     Fields[i][j] = new Field(i, j, null);
             }
+            EnPassantPossible = false;
         }
 
         public void Initialize()
@@ -66,7 +69,7 @@ namespace H_ECK.BoardElements
                 m = player.MakeAMove();
             } while (!ValidMove(m, player.White));
 
-            //Fields[m.Start.X][m.Start.Y].Piece.Move(m); umesto ovog ispod
+            //Fields[m.Start.X][m.Start.Y].Piece.Move(this, m); umesto ovog ispod
             Fields[m.End.X][m.End.Y].Piece = Fields[m.Start.X][m.Start.Y].Piece;
             Fields[m.Start.X][m.Start.Y].Piece = null;
         }
@@ -109,7 +112,6 @@ namespace H_ECK.BoardElements
                 if (!valid)
                     Console.WriteLine("Invalid move!");
                 return valid;
-                //return true;
             }
         }
 
@@ -231,71 +233,104 @@ namespace H_ECK.BoardElements
             else return true;
         }
 
-        public bool IsFieldAttacked(Field f, bool opponentPieceWhite)
+        public List<Field> FieldAttackers(Field f, bool opponentPieceWhite)
         {
-            int x = f.X;
-            int y = f.Y;
-            Field inTheWay;
+            List<Field> attackers = new List<Field>();
+
+            attackers.AddRange(CrossAttacking(f, opponentPieceWhite));
+
+            attackers.AddRange(DiagonalAttacking(f, opponentPieceWhite));
+
+
+            Field king = KingAttacking(f, opponentPieceWhite);
+            if (king != null)
+                attackers.Add(king);
+
+            List<Field> knightAttackers = KnightAttacking(f, opponentPieceWhite);
+            if (knightAttackers.Count != 0)
+                attackers.AddRange(knightAttackers);
+
+            List<Field> pawnAttackers = PawnAttacking(f, opponentPieceWhite);
+            if (pawnAttackers.Count != 0)
+                attackers.AddRange(pawnAttackers);
+
+            return attackers;
+        }
+
+        public bool IsAttackingPiece(Field inTheWay, bool opponentPieceWhite, Type piece)
+        {
+            //pomocna funkcija za ispitivanje figura koje se nadju na putu trazenja
+            //ako se na putu nadju protivnicka kraljica ili "piece" onda te figure napadaju polje
+
             Type queen = new Queen(true).GetType();
-            Type rook = new Rook(true).GetType();
-            Type bishop = new Bishop(true).GetType();
-            Type knight = new Knight(true).GetType();
-            Type pawn = new Pawn(true).GetType();
-
-
-            inTheWay = ExploreNorth(f, Fields[x][7]);
             if (inTheWay != null && inTheWay.Piece.White == opponentPieceWhite &&
-                (inTheWay.Piece.GetType().Equals(queen) || inTheWay.Piece.GetType().Equals(rook)))
-                return true;
-
-
-            inTheWay = ExploreEast(f, Fields[7][y]);
-            if (inTheWay != null && inTheWay.Piece.White == opponentPieceWhite &&
-                (inTheWay.Piece.GetType().Equals(queen) || inTheWay.Piece.GetType().Equals(rook)))
-                return true;
-
-            inTheWay = ExploreSouth(f, Fields[x][0]);
-            if (inTheWay != null && inTheWay.Piece.White == opponentPieceWhite &&
-                (inTheWay.Piece.GetType().Equals(queen) || inTheWay.Piece.GetType().Equals(rook)))
-                return true;
-
-            inTheWay = ExploreWest(f, Fields[0][y]);
-            if (inTheWay != null && inTheWay.Piece.White == opponentPieceWhite &&
-                (inTheWay.Piece.GetType().Equals(queen) || inTheWay.Piece.GetType().Equals(rook)))
-                return true;
-
-            inTheWay = ExploreNorthEast(f, Fields[7][7]);
-            if (inTheWay != null && inTheWay.Piece.White == opponentPieceWhite &&
-                (inTheWay.Piece.GetType().Equals(queen) || inTheWay.Piece.GetType().Equals(bishop)))
-                return true;
-
-            inTheWay = ExploreSouthEast(f, Fields[7][0]);
-            if (inTheWay != null && inTheWay.Piece.White == opponentPieceWhite &&
-                (inTheWay.Piece.GetType().Equals(queen) || inTheWay.Piece.GetType().Equals(bishop)))
-                return true;
-
-            inTheWay = ExploreSouthWest(f, Fields[0][0]);
-            if (inTheWay != null && inTheWay.Piece.White == opponentPieceWhite &&
-                (inTheWay.Piece.GetType().Equals(queen) || inTheWay.Piece.GetType().Equals(bishop)))
-                return true;
-
-            inTheWay = ExploreNorthWest(f, Fields[0][7]);
-            if (inTheWay != null && inTheWay.Piece.White == opponentPieceWhite &&
-                (inTheWay.Piece.GetType().Equals(queen) || inTheWay.Piece.GetType().Equals(bishop)))
-                return true;
-
-            if (KingAttacking(f, opponentPieceWhite))
-                return true;
-
-            if (KnightAttacking(f, opponentPieceWhite))
-                return true;
-
-            if (PawnAttacking(f, opponentPieceWhite))
+                (inTheWay.Piece.GetType().Equals(queen) || inTheWay.Piece.GetType().Equals(piece)))
                 return true;
             return false;
         }
 
-        public bool KingAttacking(Field f, bool opponentPieceWhite)
+        public List<Field> CrossAttacking(Field f, bool opponentPieceWhite)
+        {
+            //ispituje da li postoji figura koja napada po horizontalnom ili vertikalnom pravacu
+            //to mogu biti kraljica i top pa se top prosledjuje kao "piece" u pomocnu f-ju
+
+            Field inTheWay;
+            List<Field> attackers = new List<Field>();
+            int x = f.X;
+            int y = f.Y;
+            Type rook = new Rook(true).GetType();
+
+            inTheWay = ExploreNorth(f, Fields[x][7]);
+            if (IsAttackingPiece(inTheWay, opponentPieceWhite, rook))
+                attackers.Add(inTheWay);
+
+
+            inTheWay = ExploreEast(f, Fields[7][y]);
+            if (IsAttackingPiece(inTheWay, opponentPieceWhite, rook))
+                attackers.Add(inTheWay);
+
+            inTheWay = ExploreSouth(f, Fields[x][0]);
+            if (IsAttackingPiece(inTheWay, opponentPieceWhite, rook))
+                attackers.Add(inTheWay);
+
+            inTheWay = ExploreWest(f, Fields[0][y]);
+            if (IsAttackingPiece(inTheWay, opponentPieceWhite, rook))
+                attackers.Add(inTheWay);
+
+            return attackers;
+        }
+
+        public List<Field> DiagonalAttacking(Field f, bool opponentPieceWhite)
+        {
+            //ispituje napad po dijagonalama
+            //u pomocnu funkciju se prosledjuje lovac
+
+            Field inTheWay;
+            List<Field> attackers = new List<Field>();
+            int x = f.X;
+            int y = f.Y;
+            Type bishop = new Bishop(true).GetType();
+
+            inTheWay = ExploreNorthEast(f, Fields[7][7]);
+            if (IsAttackingPiece(inTheWay, opponentPieceWhite, bishop))
+                attackers.Add(inTheWay);
+
+            inTheWay = ExploreSouthEast(f, Fields[7][0]);
+            if (IsAttackingPiece(inTheWay, opponentPieceWhite, bishop))
+                attackers.Add(inTheWay);
+
+            inTheWay = ExploreSouthWest(f, Fields[0][0]);
+            if (IsAttackingPiece(inTheWay, opponentPieceWhite, bishop))
+                attackers.Add(inTheWay);
+
+            inTheWay = ExploreNorthWest(f, Fields[0][7]);
+            if (IsAttackingPiece(inTheWay, opponentPieceWhite, bishop))
+                attackers.Add(inTheWay);
+
+            return attackers;
+        }
+
+        public Field KingAttacking(Field f, bool opponentPieceWhite)
         {
             Type king = new King(true).GetType();
 
@@ -308,15 +343,16 @@ namespace H_ECK.BoardElements
                             Fields[f.X+dx][f.Y+dy].Piece.White == opponentPieceWhite)
                         {
                             if (king.Equals(Fields[f.X + dx][f.Y + dy].Piece.GetType()))
-                                return true;
+                                return Fields[f.X + dx][f.Y + dy];
                         }
 
                     }
-            return false;
+            return null;
         }
 
-        public bool KnightAttacking(Field f, bool opponentPieceWhite)
+        public List<Field> KnightAttacking(Field f, bool opponentPieceWhite)
         {
+            List<Field> attackers = new List<Field>();
             int[] X = { 2, 1, -1, -2, -2, -1, 1, 2 };
             int[] Y = { 1, 2, 2, 1, -1, -2, -2, -1 };
 
@@ -331,15 +367,26 @@ namespace H_ECK.BoardElements
                     if (Fields[x][y].Piece != null &&
                         knight.Equals(Fields[x][y].Piece.GetType()) &&
                         Fields[x][y].Piece.White == opponentPieceWhite)
-                        return true;
+                        attackers.Add(Fields[x][y]);
                 }
             }
-            return false;
+            return attackers;
         }
 
-        public bool PawnAttacking(Field f, bool opposingPieceWhite)
+        public List<Field> PawnAttacking(Field f, bool opposingPieceWhite)
         {
-            return false;
+            int coef = opposingPieceWhite ? -1:1;
+            Type pawn = new Pawn(true).GetType();
+
+            List<Field> attackers = new List<Field>();
+
+            for(int i = -1; i <= 1; i = i + 2)
+            {
+                if (Fields[f.X + coef][f.Y + i].Piece != null &&
+                    Fields[f.X + coef][f.Y + i].Piece.GetType().Equals(pawn))
+                    attackers.Add(Fields[f.X + coef][f.Y + i]);
+            }
+            return attackers;
         }
 
         public bool WithinBoundaries(int x, int y)

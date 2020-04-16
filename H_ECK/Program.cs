@@ -10,10 +10,6 @@ namespace H_ECK
             Game game = new Game();
             game.StartGame();
 
-            //game.Print();
-
-            //Console.WriteLine(Move.ColumnToIndex('a'));
-
         }
     }
 }

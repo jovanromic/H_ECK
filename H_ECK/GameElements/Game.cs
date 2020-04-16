@@ -1,11 +1,12 @@
 ﻿using H_ECK.BoardElements;
 using System;
+using System.Collections.Generic;
 
 namespace H_ECK.GameElements
 {
     class Game
     {
-        public static Board Board { get; set; }
+        public Board Board { get; set; }
         public Player[] Players { get; set; }
 
         public Game()
@@ -28,9 +29,9 @@ namespace H_ECK.GameElements
                 Board.PerformMove(Players[i]);
 
                 Print();
-                Console.WriteLine(Board.IsFieldAttacked(Board.Fields[2][3], false));
+                AttackedFieldList(Board.Fields[4][4]);
 
-                i = i ^ 1;
+                //i = i ^ 1;
             }
 
             Console.WriteLine("H-eck mate!");
@@ -59,6 +60,17 @@ namespace H_ECK.GameElements
                 Console.WriteLine("|\n   |___|___|___|___|___|___|___|___|");
             }
             Console.WriteLine("     A   B   C   D   E   F   G   H\n");
+        }
+
+        public void AttackedFieldList(Field f)
+        {
+            List<Field> attackers = new List<Field>();
+            attackers.AddRange(Board.FieldAttackers(f, true));
+
+            foreach(Field fld in attackers)
+            {
+                Console.WriteLine("X:{0} Y:{1} {2}\n", fld.X, fld.Y, fld.Piece.Symbol);
+            }
         }
     }
 }

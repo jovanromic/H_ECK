@@ -30,7 +30,7 @@ namespace H_ECK.Pieces
 
         public override bool ValidMove(Move move, Board board)
         {
-            throw new NotImplementedException();
+            return true;//todo
         }
     }
 }

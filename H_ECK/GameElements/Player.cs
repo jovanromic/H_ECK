@@ -21,7 +21,7 @@ namespace H_ECK.GameElements
         {
             string coordinates;
             Match match;
-            //Ocekuje se oblik: "E4 E6"
+            //Ocekuje se oblik zadavanja: "e4 e6"
             
             do
             {
