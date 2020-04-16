@@ -28,7 +28,7 @@ namespace H_ECK.Pieces
             throw new NotImplementedException();
         }
 
-        public override bool ValidMove(Move move)
+        public override bool ValidMove(Move move, Board board)
         {
             throw new NotImplementedException();
         }

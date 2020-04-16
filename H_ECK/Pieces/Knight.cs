@@ -28,9 +28,10 @@ namespace H_ECK.Pieces
             throw new NotImplementedException();
         }
 
-        public override bool ValidMove(Move move)
+        public override bool ValidMove(Move move, Board board)
         {
-            throw new NotImplementedException();
+            return (Math.Abs(move.End.X - move.Start.X) *
+                Math.Abs(move.End.Y - move.Start.Y) == 2); 
         }
     }
 }

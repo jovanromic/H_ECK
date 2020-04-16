@@ -6,7 +6,7 @@ namespace H_ECK.BoardElements
     {
         public int X { get; set; }
         public int Y { get; set; }
-        public Piece Piece { get; set; } 
+        public Piece Piece { get; set; }
 
         public Field()
         {
@@ -19,5 +19,6 @@ namespace H_ECK.BoardElements
             Y = y;
             Piece = piece;
         }
+
     }
 }

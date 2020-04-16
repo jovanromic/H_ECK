@@ -25,7 +25,7 @@ namespace H_ECK.GameElements
             
             do
             {
-                Console.WriteLine("\nPlease enter your move\n" +
+                Console.WriteLine("Please enter your move " +
                    "in the following format: e4 e6\n");
                 coordinates = Console.ReadLine().ToLower();
                 Regex regex = new Regex(@"[a-h][1-8]\s[a-h][1-8]");

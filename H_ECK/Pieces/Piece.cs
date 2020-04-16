@@ -13,7 +13,7 @@ namespace H_ECK.Pieces
         public bool White { get; set; }
         public char Symbol { get; set; }
 
-        public abstract bool ValidMove(Move move);
+        public abstract bool ValidMove(Move move, Board board);
         public abstract void Eat(Field field);
         public abstract void Move(Move move);
 

@@ -28,9 +28,34 @@ namespace H_ECK.Pieces
             throw new NotImplementedException();
         }
 
-        public override bool ValidMove(Move move)
+        public override bool ValidMove(Move move, Board board)
         {
-            throw new NotImplementedException();
+            int startX = move.Start.X;
+            int startY = move.Start.Y;
+            int endX = move.End.X;
+            int endY = move.End.Y;
+            Field inTheWay;
+
+            if (startX != endX && startY != endY)
+                return false;
+
+            //trazenje vertikalno
+            else if(startX == endX)
+            {
+                //grana iznad
+                if (endY > startY)
+                    inTheWay = board.ExploreNorth(move.Start,move.End);
+                //grana ispod
+                else inTheWay = board.ExploreSouth(move.Start,move.End);
+            }
+            //trazenje horizontalno
+            else
+            {
+                if (endX > startX)
+                    inTheWay = board.ExploreEast(move.Start,move.End);
+                else inTheWay = board.ExploreWest(move.Start,move.End);
+            }
+            return board.IsPathClear(inTheWay, move.End);
         }
     }
 }

@@ -5,7 +5,7 @@ namespace H_ECK.GameElements
 {
     class Game
     {
-        public Board Board { get; set; }
+        public static Board Board { get; set; }
         public Player[] Players { get; set; }
 
         public Game()
@@ -28,9 +28,12 @@ namespace H_ECK.GameElements
                 Board.PerformMove(Players[i]);
 
                 Print();
+                Console.WriteLine(Board.IsFieldAttacked(Board.Fields[2][3], false));
 
                 i = i ^ 1;
             }
+
+            Console.WriteLine("H-eck mate!");
 
         }
 
