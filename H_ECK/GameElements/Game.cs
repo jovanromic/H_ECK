@@ -29,7 +29,7 @@ namespace H_ECK.GameElements
             int i = 0;
 
 
-            while (!EndCondition())
+            while (!Validator.EndCondition())
             {
                 Players[i].PerformMove(Board,GameDisplay);
 
@@ -43,11 +43,7 @@ namespace H_ECK.GameElements
 
         }
 
-        public bool EndCondition()
-        {
-            //todo
-            return false;
-        }
+        
 
         //privremena fja
         public void AttackedFieldList(Field f)

@@ -61,8 +61,13 @@ namespace H_ECK.BoardElements
             //Fields[7][4].Piece = new King(false);
 
 
-            Fields[3][3].Piece = new King(true);
-            Fields[0][4].Piece = new Queen(false);
+            Fields[0][4].Piece = new King(true);
+            Fields[0][0].Piece = new Rook(true);
+            Fields[0][7].Piece = new Rook(true);
+
+            Fields[7][4].Piece = new King(false);
+            Fields[7][0].Piece = new Rook(false);
+            Fields[7][7].Piece = new Rook(false);
         }
 
     }

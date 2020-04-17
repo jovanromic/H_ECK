@@ -92,12 +92,74 @@ namespace H_ECK.MoveValidation
             board.Fields[startX][startY].Piece = p; 
         }
 
-        public static bool ShortCastlingPossible(Board board, bool white)
+        public static bool ShortCastlingPossible(Board board, Move move)
         {
-            if(white)
-            {
+            int startX = move.Start.X;
+            int startY = move.Start.Y;
+            //end pozicija kralja
+            int endX = move.End.X;
+            int endY = move.End.Y;
 
+            if (!board.Fields[startX][startY].Piece.GetType().Equals(new King(true).GetType()))
+                return false;
+            if (!board.Fields[endX][endY + 1].Piece.GetType().Equals(new Rook(true).GetType()))
+                return false;
+
+            if (((King)board.Fields[startX][startY].Piece).HasMoved ||
+                ((Rook)board.Fields[endX][endY+1].Piece).HasMoved)
+                return false;
+            else
+            {
+                for(int dy = 0; dy <= 2; dy++)
+                {
+                    if (dy != 0 && board.Fields[startX][startY + dy].Piece != null)
+                        return false;
+                    List<Field> attackers = BoardExplorer.FieldAttackers(board,
+                        board.Fields[startX][startY + dy],
+                        !board.Fields[startX][startY].Piece.White);
+                    if (attackers.Count != 0)
+                        return false;
+                }
+                return true;
             }
+        }
+
+        public static bool LongCastlingPossible(Board board, Move move)
+        {
+            int startX = move.Start.X;
+            int startY = move.Start.Y;
+            //end pozicija kralja
+            int endX = move.End.X;
+            int endY = move.End.Y;
+
+            if (!board.Fields[startX][startY].Piece.GetType().Equals(new King(true).GetType()))
+                return false;
+            if (!board.Fields[endX][endY - 2].Piece.GetType().Equals(new Rook(true).GetType()))
+                return false;
+
+            if (((King)board.Fields[startX][startY].Piece).HasMoved ||
+                ((Rook)board.Fields[endX][endY - 2].Piece).HasMoved)
+                return false;
+            else
+            {
+                for (int dy = 0; dy <= 2; dy++)
+                {
+                    if (dy != 0 && board.Fields[startX][startY - dy].Piece != null)
+                        return false;
+                    List<Field> attackers = BoardExplorer.FieldAttackers(board,
+                        board.Fields[startX][startY - dy],
+                        !board.Fields[startX][startY].Piece.White);
+                    if (attackers.Count != 0)
+                        return false;
+                }
+                return true;
+            }
+        }
+
+        public static bool EndCondition()
+        {
+            //todo
+            return false;
         }
     }
 }

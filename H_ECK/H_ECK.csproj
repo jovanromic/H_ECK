@@ -49,6 +49,7 @@
     <Compile Include="BoardElements\Board.cs" />
     <Compile Include="BoardElements\Field.cs" />
     <Compile Include="GameElements\Game.cs" />
+    <Compile Include="GameElements\LongCastling.cs" />
     <Compile Include="GameElements\Move.cs" />
     <Compile Include="GameElements\Player.cs" />
     <Compile Include="GameElements\ShortCastling.cs" />

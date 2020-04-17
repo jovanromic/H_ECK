@@ -57,10 +57,16 @@ namespace H_ECK.GameElements
                 if(coordinates.Length == 3)
                 {
                     display.DisplayMessage("Short castling.\n");
+                    if(White)
+                        return new ShortCastling(new Field(0, 4, null), new Field(0, 6, null));
+                    else return new ShortCastling(new Field(7, 4, null), new Field(7, 6, null));
                 }
                 else
                 {
                     display.DisplayMessage("Long castling.\n");
+                    if (White)
+                        return new LongCastling(new Field(0, 4, null), new Field(0, 2, null));
+                    else return new LongCastling(new Field(7, 4, null), new Field(7, 2, null));
                 }
             }
             else
@@ -74,8 +80,6 @@ namespace H_ECK.GameElements
                 return new Move(start, end);
             }
 
-
-            return null;
         }
 
         public Move PerformMove(Board board, IGameDisplay display)

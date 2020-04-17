@@ -24,6 +24,20 @@ namespace H_ECK.Pieces
         public override void Move(Move move, Board board)
         {
             base.Move(move,board);
+
+            if(move.GetType().Equals(new ShortCastling(null,null).GetType()))
+            {
+                board.Fields[move.End.X][7].Piece.Move(
+                    new Move(new Field(move.End.X, 7, null), new Field(move.End.X, 5, null)),
+                    board);
+            }
+            else if (move.GetType().Equals(new LongCastling(null, null).GetType()))
+            {
+                board.Fields[move.End.X][0].Piece.Move(
+                    new Move(new Field(move.End.X, 0, null), new Field(move.End.X, 3, null)),
+                    board);
+            }
+
             HasMoved = true;
         }
 
@@ -36,6 +50,14 @@ namespace H_ECK.Pieces
 
             int dx = Math.Abs(endX - startX);
             int dy = Math.Abs(endY - startY);
+
+            if (move.GetType().Equals(new ShortCastling(null, null).GetType()) &&
+                Validator.ShortCastlingPossible(board, move))
+                return true;
+
+            if (move.GetType().Equals(new LongCastling(null, null).GetType()) &&
+                Validator.LongCastlingPossible(board, move))
+                return true;
 
             if (dx > 1)
                 return false;
@@ -52,22 +74,5 @@ namespace H_ECK.Pieces
                 return (attackers.Count == 0);
             }
         }
-
-        //public bool CastlingPossible(Board board, int startX,int startY,int endX, int endY, bool white)
-        //{
-        //    if (HasMoved)
-        //        return false;
-        //    else
-        //    {
-        //        if (white)
-        //        {
-        //            if (board.Fields[endX][endY])
-        //        }
-        //        else
-        //        {
-
-        //        }
-        //    }
-        //}
     }
 }
