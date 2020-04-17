@@ -5,27 +5,26 @@ using System.Text;
 using System.Threading.Tasks;
 using H_ECK.BoardElements;
 using H_ECK.GameElements;
+using H_ECK.MoveValidation;
 
 namespace H_ECK.Pieces
 {
     class Rook : Piece
     {
+        public bool HasMoved { get; set; }
         public Rook(bool white)
             : base(white)
         {
             if (white)
                 Symbol = 'R';
             else Symbol = 'r';
+            HasMoved = false;
         }
 
-        public override void Eat(Field field)
+        public override void Move(Move move, Board board)
         {
-            throw new NotImplementedException();
-        }
-
-        public override void Move(Move move)
-        {
-            throw new NotImplementedException();
+            base.Move(move, board);
+            HasMoved = true;
         }
 
         public override bool ValidMove(Move move, Board board)
@@ -44,18 +43,18 @@ namespace H_ECK.Pieces
             {
                 //grana iznad
                 if (endY > startY)
-                    inTheWay = board.ExploreNorth(move.Start,move.End);
+                    inTheWay = BoardExplorer.ExploreNorth(board, move.Start,move.End);
                 //grana ispod
-                else inTheWay = board.ExploreSouth(move.Start,move.End);
+                else inTheWay = BoardExplorer.ExploreSouth(board,move.Start,move.End);
             }
             //trazenje horizontalno
             else
             {
                 if (endX > startX)
-                    inTheWay = board.ExploreEast(move.Start,move.End);
-                else inTheWay = board.ExploreWest(move.Start,move.End);
+                    inTheWay = BoardExplorer.ExploreEast(board, move.Start,move.End);
+                else inTheWay = BoardExplorer.ExploreWest(board, move.Start,move.End);
             }
-            return board.IsPathClear(inTheWay, move.End);
+            return BoardExplorer.IsPathClear(inTheWay, move.End);
         }
     }
 }

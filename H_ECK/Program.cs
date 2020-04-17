@@ -1,5 +1,9 @@
 ﻿using H_ECK.GameElements;
+using H_ECK.GameUI;
+using H_ECK.MoveValidation;
 using System;
+using System.Text;
+using System.Text.RegularExpressions;
 
 namespace H_ECK
 {
@@ -9,7 +13,6 @@ namespace H_ECK
         {
             Game game = new Game();
             game.StartGame();
-
         }
     }
 }

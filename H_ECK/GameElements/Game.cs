@@ -1,13 +1,17 @@
 ﻿using H_ECK.BoardElements;
+using H_ECK.GameUI;
+using H_ECK.MoveValidation;
 using System;
 using System.Collections.Generic;
 
 namespace H_ECK.GameElements
 {
-    class Game
+    public class Game
     {
         public Board Board { get; set; }
         public Player[] Players { get; set; }
+        public IGameDisplay GameDisplay { get; set; }
+
 
         public Game()
         {
@@ -15,26 +19,27 @@ namespace H_ECK.GameElements
             Players = new Player[2];
             Players[0] = new Player(true);
             Players[1] = new Player(false);
+            GameDisplay = new ConsoleDisplay();
         }
 
         public void StartGame()
         {
             Board.Initialize();
-            Print();
+            GameDisplay.DisplayBoard(this);
             int i = 0;
 
 
             while (!EndCondition())
             {
-                Board.PerformMove(Players[i]);
+                Players[i].PerformMove(Board,GameDisplay);
 
-                Print();
-                AttackedFieldList(Board.Fields[4][4]);
+                GameDisplay.DisplayBoard(this);
+                //AttackedFieldList(Board.Fields[4][4]);
 
-                //i = i ^ 1;
+                i = i ^ 1;
             }
 
-            Console.WriteLine("H-eck mate!");
+            GameDisplay.DisplayMessage("H-eck mate!");
 
         }
 
@@ -44,28 +49,11 @@ namespace H_ECK.GameElements
             return false;
         }
 
-        public void Print()
-        {
-            Console.WriteLine("   ________________________________");
-            for (int i = 7; i >= 0; i--)
-            {
-                Console.Write(" {0} ", i + 1);
-                for (int j = 0; j < 8; j++)
-                {
-                    if (Board.Fields[i][j].Piece != null)
-                        Console.Write("| {0} ", Board.Fields[i][j].Piece.Symbol);
-                    else
-                        Console.Write("|   ");
-                }
-                Console.WriteLine("|\n   |___|___|___|___|___|___|___|___|");
-            }
-            Console.WriteLine("     A   B   C   D   E   F   G   H\n");
-        }
-
+        //privremena fja
         public void AttackedFieldList(Field f)
         {
             List<Field> attackers = new List<Field>();
-            attackers.AddRange(Board.FieldAttackers(f, true));
+            attackers.AddRange(BoardExplorer.FieldAttackers(Board, f, true));
 
             foreach(Field fld in attackers)
             {

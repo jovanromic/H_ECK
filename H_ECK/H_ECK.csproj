@@ -51,6 +51,11 @@
     <Compile Include="GameElements\Game.cs" />
     <Compile Include="GameElements\Move.cs" />
     <Compile Include="GameElements\Player.cs" />
+    <Compile Include="GameElements\ShortCastling.cs" />
+    <Compile Include="GameUI\ConsoleDisplay.cs" />
+    <Compile Include="GameUI\GameDisplay.cs" />
+    <Compile Include="MoveValidation\BoardExplorer.cs" />
+    <Compile Include="MoveValidation\Validator.cs" />
     <Compile Include="Pieces\Bishop.cs" />
     <Compile Include="Pieces\King.cs" />
     <Compile Include="Pieces\Knight.cs" />

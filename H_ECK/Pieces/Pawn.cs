@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using H_ECK.BoardElements;
 using H_ECK.GameElements;
+using H_ECK.MoveValidation;
 
 namespace H_ECK.Pieces
 {
@@ -16,16 +17,6 @@ namespace H_ECK.Pieces
             if (white)
                 Symbol = 'P';
             else Symbol = 'p';
-        }
-
-        public override void Eat(Field field)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void Move(Move move)
-        {
-            throw new NotImplementedException();
         }
 
         public override bool ValidMove(Move move, Board board)
@@ -43,12 +34,23 @@ namespace H_ECK.Pieces
                 return false;
             if (Math.Abs(endX - startX) > 2)
                 return false;
-            if (CanMove(board, startX, startY, endX, endY, white) ||
-                CanEat(board, startX, startY, endX, endY, white) ||
-                CanMoveTwice(board,startX,startY,endX,endY,white))
-                return true;
+            bool enPassant = IsEnPassant(board, startX, startY, endX, endY, white);
+            bool canMove = CanMove(board, startX, startY, endX, endY, white);
+            bool canEat = CanEat(board, startX, startY, endX, endY, white);
+            bool canMoveTwice = CanMoveTwice(board, startX, startY, endX, endY, white);
+            bool isPromotion = IsPromotion(endX, white);
 
-            return false;
+            if (isPromotion && (canMove||canEat))
+            {
+                Validator.SelectPromotionPiece(board, startX,startY, white);
+                return true;
+            }
+            //if (isPromotion && canEat)
+            //{
+            //    return true;
+            //}
+
+            return (enPassant || canMove || canEat || canMoveTwice);
         }
 
         public bool CanEat(Board board, int startX, int startY, int endX, int endY, bool white)
@@ -84,13 +86,54 @@ namespace H_ECK.Pieces
 
             if ((startY - endY) == 0 && startX == rowX && (endX - startX) == coef)
             {
-                if ((white ? board.ExploreNorth(board.Fields[startX][startY],
+                if ((white ? BoardExplorer.ExploreNorth(board, board.Fields[startX][startY],
                     board.Fields[endX][endY]) :
-                    board.ExploreSouth(board.Fields[startX][startY], 
+                    BoardExplorer.ExploreSouth(board, board.Fields[startX][startY],
                     board.Fields[endX][endY])) == null)
                     return true;
             }
             return false;
+        }
+
+        public bool IsEnPassant(Board board, int startX, int startY, int endX, int endY, bool white)
+        {
+            //da li je poslednji potez bio pionom koji je presao 2 polja
+            Type pawn = new Pawn(true).GetType();
+            if (board.LastMove != null &&
+                board.LastMove.End.Piece.GetType() == pawn &&
+                Math.Abs(board.LastMove.End.X - board.LastMove.Start.X) == 2)
+            {
+                int x = board.LastMove.End.X;
+                int y;
+                for (int i = -1; i <= 1; i = i + 2)
+                {
+                    y = board.LastMove.End.Y + i;
+                    if (BoardExplorer.WithinBoundaries(x, y))
+                    {
+                        //da li je pocetno polje mog piona u istoj vrsti i susednoj koloni
+                        if (x == startX && y == startY)
+                        {
+                            int coef = white ? 1 : -1;
+                            //da li je krajnje polje mog piona u istoj koloni i susednoj vrsti
+                            if (endY == board.LastMove.End.Y && endX == x + coef)
+                            {
+                                //jedi protivnickog piona
+                                board.Fields[x][board.LastMove.End.Y].Piece = null;
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+            return false;
+        }
+
+        public bool IsPromotion(int endX, bool white)
+        {
+            int row = white ? 7 : 0;
+
+            return (endX == row);
+       
         }
     }
 }

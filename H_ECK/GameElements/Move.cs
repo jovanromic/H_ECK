@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace H_ECK.GameElements
 {
-    class Move
+    public class Move
     {
         public Field Start { get; set; }
         public Field End { get; set; }

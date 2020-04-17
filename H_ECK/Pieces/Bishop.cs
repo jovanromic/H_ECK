@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using H_ECK.BoardElements;
 using H_ECK.GameElements;
+using H_ECK.MoveValidation;
 
 namespace H_ECK.Pieces
 {
@@ -16,16 +17,6 @@ namespace H_ECK.Pieces
             if (white)
                 Symbol = 'B';
             else Symbol = 'b';
-        }
-
-        public override void Eat(Field field)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void Move(Move move)
-        {
-            throw new NotImplementedException();
         }
 
         public override bool ValidMove(Move move, Board board)
@@ -44,17 +35,17 @@ namespace H_ECK.Pieces
                 Field inTheWay;
 
                 if (endX > startX && endY > startY)
-                    inTheWay = board.ExploreNorthEast(move.Start, move.End);
+                    inTheWay = BoardExplorer.ExploreNorthEast(board,move.Start, move.End);
 
                 else if (endX > startX && endY < startY)
-                    inTheWay = board.ExploreSouthEast(move.Start, move.End);
+                    inTheWay = BoardExplorer.ExploreSouthEast(board, move.Start, move.End);
 
                 else if (endX < startX && endY < startY)
-                    inTheWay = board.ExploreSouthWest(move.Start, move.End);
+                    inTheWay = BoardExplorer.ExploreSouthWest(board, move.Start, move.End);
 
-                else inTheWay = board.ExploreNorthWest(move.Start, move.End);
+                else inTheWay = BoardExplorer.ExploreNorthWest(board,move.Start, move.End);
 
-                return board.IsPathClear(inTheWay, move.End);
+                return BoardExplorer.IsPathClear(inTheWay, move.End);
 
             }
         }

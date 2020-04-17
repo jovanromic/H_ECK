@@ -2,7 +2,7 @@
 
 namespace H_ECK.BoardElements
 {
-    class Field
+    public class Field
     {
         public int X { get; set; }
         public int Y { get; set; }

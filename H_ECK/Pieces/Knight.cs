@@ -18,16 +18,6 @@ namespace H_ECK.Pieces
             else Symbol = 'n';
         }
 
-        public override void Eat(Field field)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void Move(Move move)
-        {
-            throw new NotImplementedException();
-        }
-
         public override bool ValidMove(Move move, Board board)
         {
             return (Math.Abs(move.End.X - move.Start.X) *
