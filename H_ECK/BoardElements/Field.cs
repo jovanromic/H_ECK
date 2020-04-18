@@ -8,9 +8,11 @@ namespace H_ECK.BoardElements
         public int Y { get; set; }
         public Piece Piece { get; set; }
 
-        public Field()
+        public Field(Field f)
         {
-
+            X = f.X;
+            Y = f.Y;
+            Piece = f.Piece;
         }
 
         public Field(int x, int y, Piece piece)

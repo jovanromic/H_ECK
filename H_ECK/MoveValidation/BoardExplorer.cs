@@ -11,108 +11,124 @@ namespace H_ECK.MoveValidation
     class BoardExplorer
     {
         //pomocne funkcije za odredjivanje napadnutog polja
-        public static Field ExploreNorth(Board board, Field current, Field end)
+        public static List<Field> ExploreEast(Board board, Field current, Field end)
         {
+            List<Field> path = new List<Field>();
             for (int i = current.Y + 1; i <= end.Y; i++)
             {
+                path.Add(board.Fields[current.X][i]);
                 if (board.Fields[current.X][i].Piece != null)
-                    return board.Fields[current.X][i];
+                    return path;
             }
-            return null;
+            return path;
         }
 
-        public static Field ExploreSouth(Board board, Field current, Field end)
+        public static List<Field> ExploreWest(Board board, Field current, Field end)
         {
+            List<Field> path = new List<Field>();
             for (int i = current.Y - 1; i >= end.Y; i--)
             {
+                path.Add(board.Fields[current.X][i]);
                 if (board.Fields[current.X][i].Piece != null)
-                    return board.Fields[current.X][i];
+                    return path;
             }
-            return null;
+            return path;
         }
 
-        public static Field ExploreEast(Board board, Field current, Field end)
+        public static List<Field> ExploreNorth(Board board, Field current, Field end)
         {
+            List<Field> path = new List<Field>();
             for (int i = current.X + 1; i <= end.X; i++)
             {
+                path.Add(board.Fields[i][current.Y]);
                 if (board.Fields[i][current.Y].Piece != null)
-                    return board.Fields[i][current.Y];
+                    return path;
             }
-            return null;
+            return path;
         }
 
-        public static Field ExploreWest(Board board, Field current, Field end)
+        public static List<Field> ExploreSouth(Board board, Field current, Field end)
         {
+            List<Field> path = new List<Field>();
             for (int i = current.X - 1; i >= end.X; i--)
             {
+                path.Add(board.Fields[i][current.Y]);
                 if (board.Fields[i][current.Y].Piece != null)
-                    return board.Fields[i][current.Y];
+                    return path;
             }
-            return null;
+            return path;
         }
 
-        public static Field ExploreNorthEast(Board board, Field current, Field end)
+        public static List<Field> ExploreNorthEast(Board board, Field current, Field end)
         {
+            List<Field> path = new List<Field>();
             int i = current.X + 1;
             int j = current.Y + 1;
 
             while (i <= end.X && j <= end.Y)
             {
+                path.Add(board.Fields[i][j]);
                 if (board.Fields[i][j].Piece != null)
-                    return board.Fields[i][j];
+                    return path;
 
                 i++;
                 j++;
             }
-            return null;
+            return path;
         }
 
-        public static Field ExploreNorthWest(Board board, Field current, Field end)
+        public static List<Field> ExploreNorthWest(Board board, Field current, Field end)
         {
+            List<Field> path = new List<Field>();
             int i = current.X - 1;
             int j = current.Y + 1;
 
             while (i >= end.X && j <= end.Y)
             {
+                path.Add(board.Fields[i][j]);
                 if (board.Fields[i][j].Piece != null)
-                    return board.Fields[i][j];
+                    return path;
 
                 i--;
                 j++;
             }
-            return null;
+            return path;
         }
 
-        public static Field ExploreSouthEast(Board board, Field current, Field end)
+        public static List<Field> ExploreSouthEast(Board board, Field current, Field end)
         {
+            List<Field> path = new List<Field>();
             int i = current.X + 1;
             int j = current.Y - 1;
 
             while (i <= end.X && j >= end.Y)
             {
+                path.Add(board.Fields[i][j]);
                 if (board.Fields[i][j].Piece != null)
-                    return board.Fields[i][j];
+                    return path;
 
                 i++;
                 j--;
             }
-            return null;
+            return path;
         }
 
-        public static Field ExploreSouthWest(Board board, Field current, Field end)
+        public static List<Field> ExploreSouthWest(Board board, Field current, Field end)
         {
+            List<Field> path = new List<Field>();
             int i = current.X - 1;
             int j = current.Y - 1;
 
             while (i >= end.X && j >= end.Y)
             {
+                path.Add(board.Fields[i][j]);
                 if (board.Fields[i][j].Piece != null)
-                    return board.Fields[i][j];
+                    return path;
 
                 i--;
                 j--;
             }
-            return null;
+            return path;
         }
 
         private static bool IsAttackingPiece(Field inTheWay, bool opponentPieceWhite, Type piece)
@@ -121,7 +137,7 @@ namespace H_ECK.MoveValidation
             //ako se na putu nadju protivnicka kraljica ili "piece" onda te figure napadaju polje
 
             Type queen = new Queen(true).GetType();
-            if (inTheWay != null && inTheWay.Piece.White == opponentPieceWhite &&
+            if (inTheWay.Piece != null && inTheWay.Piece.White == opponentPieceWhite &&
                 (inTheWay.Piece.GetType().Equals(queen) || inTheWay.Piece.GetType().Equals(piece)))
                 return true;
             return false;
@@ -134,26 +150,44 @@ namespace H_ECK.MoveValidation
 
             Field inTheWay;
             List<Field> attackers = new List<Field>();
+            List<Field> path;
             int x = f.X;
             int y = f.Y;
             Type rook = new Rook(true).GetType();
 
-            inTheWay = ExploreNorth(board, f, board.Fields[x][7]);
-            if (IsAttackingPiece(inTheWay, opponentPieceWhite, rook))
-                attackers.Add(inTheWay);
+            path = ExploreEast(board, f, board.Fields[x][7]);
+            if (path.Count > 0)
+            {
+                inTheWay = path[path.Count - 1];
+                if (IsAttackingPiece(inTheWay, opponentPieceWhite, rook))
+                    attackers.Add(inTheWay);
+            }
 
 
-            inTheWay = ExploreEast(board, f, board.Fields[7][y]);
-            if (IsAttackingPiece(inTheWay, opponentPieceWhite, rook))
-                attackers.Add(inTheWay);
+            path = ExploreNorth(board, f, board.Fields[7][y]);
+            if (path.Count > 0)
+            {
+                inTheWay = path[path.Count - 1];
+                if (IsAttackingPiece(inTheWay, opponentPieceWhite, rook))
+                    attackers.Add(inTheWay);
+            }
 
-            inTheWay = ExploreSouth(board, f, board.Fields[x][0]);
-            if (IsAttackingPiece(inTheWay, opponentPieceWhite, rook))
-                attackers.Add(inTheWay);
 
-            inTheWay = ExploreWest(board, f, board.Fields[0][y]);
-            if (IsAttackingPiece(inTheWay, opponentPieceWhite, rook))
-                attackers.Add(inTheWay);
+            path = ExploreWest(board, f, board.Fields[x][0]);
+            if (path.Count > 0)
+            {
+                inTheWay = path[path.Count - 1];
+                if (IsAttackingPiece(inTheWay, opponentPieceWhite, rook))
+                    attackers.Add(inTheWay);
+            }
+
+            path = ExploreSouth(board, f, board.Fields[0][y]);
+            if (path.Count > 0)
+            {
+                inTheWay = path[path.Count - 1];
+                if (IsAttackingPiece(inTheWay, opponentPieceWhite, rook))
+                    attackers.Add(inTheWay);
+            }
 
             return attackers;
         }
@@ -165,25 +199,42 @@ namespace H_ECK.MoveValidation
 
             Field inTheWay;
             List<Field> attackers = new List<Field>();
+            List<Field> path;
             int x = f.X;
             int y = f.Y;
             Type bishop = new Bishop(true).GetType();
 
-            inTheWay = ExploreNorthEast(board, f, board.Fields[7][7]);
-            if (IsAttackingPiece(inTheWay, opponentPieceWhite, bishop))
-                attackers.Add(inTheWay);
+            path = ExploreNorthEast(board, f, board.Fields[7][7]);
+            if (path.Count > 0)
+            {
+                inTheWay = path[path.Count - 1];
+                if (IsAttackingPiece(inTheWay, opponentPieceWhite, bishop))
+                    attackers.Add(inTheWay);
+            }
 
-            inTheWay = ExploreSouthEast(board, f, board.Fields[7][0]);
-            if (IsAttackingPiece(inTheWay, opponentPieceWhite, bishop))
-                attackers.Add(inTheWay);
+            path = ExploreSouthEast(board, f, board.Fields[7][0]);
+            if (path.Count > 0)
+            {
+                inTheWay = path[path.Count - 1];
+                if (IsAttackingPiece(inTheWay, opponentPieceWhite, bishop))
+                    attackers.Add(inTheWay);
+            }
 
-            inTheWay = ExploreSouthWest(board, f, board.Fields[0][0]);
-            if (IsAttackingPiece(inTheWay, opponentPieceWhite, bishop))
-                attackers.Add(inTheWay);
+            path = ExploreSouthWest(board, f, board.Fields[0][0]);
+            if (path.Count > 0)
+            {
+                inTheWay = path[path.Count - 1];
+                if (IsAttackingPiece(inTheWay, opponentPieceWhite, bishop))
+                    attackers.Add(inTheWay);
+            }
 
-            inTheWay = ExploreNorthWest(board,f, board.Fields[0][7]);
-            if (IsAttackingPiece(inTheWay, opponentPieceWhite, bishop))
-                attackers.Add(inTheWay);
+            path = ExploreNorthWest(board, f, board.Fields[0][7]);
+            if (path.Count > 0)
+            {
+                inTheWay = path[path.Count - 1];
+                if (IsAttackingPiece(inTheWay, opponentPieceWhite, bishop))
+                    attackers.Add(inTheWay);
+            }
 
             return attackers;
         }
@@ -241,7 +292,8 @@ namespace H_ECK.MoveValidation
             for (int i = -1; i <= 1; i = i + 2)
             {
                 if (board.Fields[f.X + coef][f.Y + i].Piece != null &&
-                    board.Fields[f.X + coef][f.Y + i].Piece.GetType().Equals(pawn))
+                    board.Fields[f.X + coef][f.Y + i].Piece.GetType().Equals(pawn) &&
+                    board.Fields[f.X + coef][f.Y + i].Piece.White == opposingPieceWhite)
                     attackers.Add(board.Fields[f.X + coef][f.Y + i]);
             }
             return attackers;
@@ -289,5 +341,46 @@ namespace H_ECK.MoveValidation
 
             else return true;
         }
+
+        public static bool CanEscape(Board board, bool white)
+        {
+            int index = white ? 0 : 1;
+            Field f = board.CurrentKingFields[index];
+            for (int dx = -1; dx <= 1; dx++)
+                for (int dy = -1; dy <= 1; dy++)
+                    if (!(dx == 0 && dy == 0))
+                    {
+                        if (WithinBoundaries(f.X + dx, f.Y + dy) &&
+                            board.Fields[f.X + dx][f.Y + dy].Piece == null)
+                        {
+                            List<Field> attackers = FieldAttackers(board,
+                                board.Fields[f.X + dx][f.Y + dy], !white);
+                            if (attackers.Count == 0)
+                                return true;
+                        }
+
+                    }
+            return false;
+        }
+
+        //public static bool CanEatAttacker(Board board, Field attackerField, bool white)
+        //{
+        //    List<Field> defenders
+        //    //todo
+        //    //return false;
+        //}
+
+        public static bool CanBlockAttacker(Board board, Field attackerField, bool white)
+        {
+            //todo
+            return false;
+            if (new Knight(true).GetType().Equals(attackerField.Piece.GetType()))
+                return false;
+            else
+            {
+
+            }
+        }
+
     }
 }

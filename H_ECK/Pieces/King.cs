@@ -38,6 +38,8 @@ namespace H_ECK.Pieces
                     board);
             }
 
+            int index = White ? 0 : 1;
+            board.CurrentKingFields[index] = new Field(board.Fields[move.End.X][move.End.Y]);
             HasMoved = true;
         }
 

@@ -33,16 +33,16 @@ namespace H_ECK.Pieces
             int startY = move.Start.Y;
             int endX = move.End.X;
             int endY = move.End.Y;
-            Field inTheWay;
+            List<Field> inTheWay;
 
             if (startX != endX && startY != endY)
                 return false;
 
             //trazenje vertikalno
-            else if(startX == endX)
+            else if(startY == endY)
             {
                 //grana iznad
-                if (endY > startY)
+                if (endX > startX)
                     inTheWay = BoardExplorer.ExploreNorth(board, move.Start,move.End);
                 //grana ispod
                 else inTheWay = BoardExplorer.ExploreSouth(board,move.Start,move.End);
@@ -50,11 +50,12 @@ namespace H_ECK.Pieces
             //trazenje horizontalno
             else
             {
-                if (endX > startX)
+                if (endY > startY)
                     inTheWay = BoardExplorer.ExploreEast(board, move.Start,move.End);
                 else inTheWay = BoardExplorer.ExploreWest(board, move.Start,move.End);
             }
-            return BoardExplorer.IsPathClear(inTheWay, move.End);
+            
+            return BoardExplorer.IsPathClear(inTheWay[inTheWay.Count-1], move.End);
         }
     }
 }

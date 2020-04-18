@@ -34,23 +34,20 @@ namespace H_ECK.Pieces
                 return false;
             if (Math.Abs(endX - startX) > 2)
                 return false;
-            bool enPassant = IsEnPassant(board, startX, startY, endX, endY, white);
+            Validator.EnPassant = IsEnPassant(board, startX, startY, endX, endY, white);
             bool canMove = CanMove(board, startX, startY, endX, endY, white);
             bool canEat = CanEat(board, startX, startY, endX, endY, white);
             bool canMoveTwice = CanMoveTwice(board, startX, startY, endX, endY, white);
-            bool isPromotion = IsPromotion(endX, white);
+            Validator.Promotion = (IsPromotion(endX, white) && (canMove || canEat));
 
-            if (isPromotion && (canMove||canEat))
+            if (Validator.Promotion)
             {
-                Validator.SelectPromotionPiece(board, startX,startY, white);
-                return true;
+                Piece p = Validator.SelectPromotionPiece(board, startX, startY, white);
+                Validator.PromotionPiece = p;
             }
-            //if (isPromotion && canEat)
-            //{
-            //    return true;
-            //}
 
-            return (enPassant || canMove || canEat || canMoveTwice);
+            return (Validator.Promotion || Validator.EnPassant ||
+                canMove || canEat || canMoveTwice);
         }
 
         public bool CanEat(Board board, int startX, int startY, int endX, int endY, bool white)
@@ -86,13 +83,34 @@ namespace H_ECK.Pieces
 
             if ((startY - endY) == 0 && startX == rowX && (endX - startX) == coef)
             {
-                if ((white ? BoardExplorer.ExploreNorth(board, board.Fields[startX][startY],
+                List<Field> path = white ? BoardExplorer.
+                    ExploreNorth(board, board.Fields[startX][startY],
                     board.Fields[endX][endY]) :
                     BoardExplorer.ExploreSouth(board, board.Fields[startX][startY],
-                    board.Fields[endX][endY])) == null)
+                    board.Fields[endX][endY]);
+                if (path[path.Count - 1].Piece == null)
                     return true;
             }
             return false;
+        }
+
+        public override void Move(Move move, Board board)
+        {
+            int startX = move.Start.X;
+            int startY = move.Start.Y;
+
+            if (Validator.EnPassant)
+            {
+                int lastX = board.LastMove.End.X;
+                int lastY = board.LastMove.End.Y;
+
+                board.Fields[lastX][lastY].Piece = null;
+            }
+            else if (Validator.Promotion)
+            {
+                board.Fields[startX][startY].Piece = Validator.PromotionPiece;
+            }
+            base.Move(move, board);
         }
 
         public bool IsEnPassant(Board board, int startX, int startY, int endX, int endY, bool white)
@@ -115,10 +133,10 @@ namespace H_ECK.Pieces
                         {
                             int coef = white ? 1 : -1;
                             //da li je krajnje polje mog piona u istoj koloni i susednoj vrsti
-                            if (endY == board.LastMove.End.Y && endX == x + coef)
+                            if (endY == board.LastMove.End.Y && endX == (x + coef))
                             {
                                 //jedi protivnickog piona
-                                board.Fields[x][board.LastMove.End.Y].Piece = null;
+                                //board.Fields[x][board.LastMove.End.Y].Piece = null;
                                 return true;
                             }
                         }
@@ -133,7 +151,7 @@ namespace H_ECK.Pieces
             int row = white ? 7 : 0;
 
             return (endX == row);
-       
+
         }
     }
 }

@@ -29,12 +29,12 @@ namespace H_ECK.GameElements
             int i = 0;
 
 
-            while (!Validator.EndCondition())
+            while (!Validator.CheckMate(Board,i))
             {
                 Players[i].PerformMove(Board,GameDisplay);
 
                 GameDisplay.DisplayBoard(this);
-                //AttackedFieldList(Board.Fields[4][4]);
+                //DisplayAttackers(Board.Fields[4][4]);
 
                 i = i ^ 1;
             }
@@ -46,7 +46,7 @@ namespace H_ECK.GameElements
         
 
         //privremena fja
-        public void AttackedFieldList(Field f)
+        public void DisplayAttackers(Field f)
         {
             List<Field> attackers = new List<Field>();
             attackers.AddRange(BoardExplorer.FieldAttackers(Board, f, true));

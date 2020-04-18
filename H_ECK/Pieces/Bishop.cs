@@ -32,7 +32,7 @@ namespace H_ECK.Pieces
                 return false;
             else
             {
-                Field inTheWay;
+                List<Field> inTheWay;
 
                 if (endX > startX && endY > startY)
                     inTheWay = BoardExplorer.ExploreNorthEast(board,move.Start, move.End);
@@ -45,7 +45,7 @@ namespace H_ECK.Pieces
 
                 else inTheWay = BoardExplorer.ExploreNorthWest(board,move.Start, move.End);
 
-                return BoardExplorer.IsPathClear(inTheWay, move.End);
+                return BoardExplorer.IsPathClear(inTheWay[inTheWay.Count - 1], move.End);
 
             }
         }

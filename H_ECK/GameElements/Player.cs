@@ -22,7 +22,7 @@ namespace H_ECK.GameElements
         public string ReadInput(IGameDisplay display)
         {
             string coordinates;
-            Match match, shortMatch,longMatch;
+            Match match, shortMatch, longMatch;
             //Ocekuje se oblik zadavanja: "e4 e6"
 
             do
@@ -40,7 +40,7 @@ namespace H_ECK.GameElements
                 longMatch = longCastling.Match(coordinates);
 
             } while (!match.Success && !shortMatch.Success && !longMatch.Success);
-            
+
             return coordinates;
         }
 
@@ -54,10 +54,10 @@ namespace H_ECK.GameElements
             char[] coordinates = ReadInput(display).ToCharArray();
             if (coordinates[0] == '0')
             {
-                if(coordinates.Length == 3)
+                if (coordinates.Length == 3)
                 {
                     display.DisplayMessage("Short castling.\n");
-                    if(White)
+                    if (White)
                         return new ShortCastling(new Field(0, 4, null), new Field(0, 6, null));
                     else return new ShortCastling(new Field(7, 4, null), new Field(7, 6, null));
                 }
@@ -88,9 +88,12 @@ namespace H_ECK.GameElements
             do
             {
                 m = MoveFromInput(display);
-            } while (!Validator.ValidMove(board, m, White,display));
+            } while (!Validator.TryMove(board, m, White, display));
 
-            board.Fields[m.Start.X][m.Start.Y].Piece.Move(m,board);
+            board.Fields[m.Start.X][m.Start.Y].Piece.Move(m, board);
+            Validator.EnPassant = false;
+            Validator.Promotion = false;
+            Validator.PromotionPiece = null;
 
             board.LastMove = new Move(board.Fields[m.Start.X][m.Start.Y],
                 board.Fields[m.End.X][m.End.Y]);
