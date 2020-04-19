@@ -1,8 +1,5 @@
 ﻿using H_ECK.GameElements;
-using H_ECK.MoveValidation;
 using H_ECK.Pieces;
-using System;
-using System.Collections.Generic;
 
 namespace H_ECK.BoardElements
 {

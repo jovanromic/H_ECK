@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using H_ECK.BoardElements;
+﻿using H_ECK.BoardElements;
 using H_ECK.GameElements;
 using H_ECK.MoveValidation;
+using System;
+using System.Collections.Generic;
 
 namespace H_ECK.Pieces
 {

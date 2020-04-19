@@ -4,9 +4,6 @@ using H_ECK.GameUI;
 using H_ECK.Pieces;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace H_ECK.MoveValidation
 {

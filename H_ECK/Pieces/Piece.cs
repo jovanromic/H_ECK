@@ -1,10 +1,5 @@
 ﻿using H_ECK.BoardElements;
 using H_ECK.GameElements;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace H_ECK.Pieces
 {
