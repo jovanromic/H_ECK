@@ -25,7 +25,7 @@ namespace H_ECK.GameElements
         public void StartGame()
         {
             Board.Initialize();
-            GameDisplay.DisplayBoard(this);
+            GameDisplay.DisplayBoard(Board);
             int i = 0;
 
 
@@ -33,7 +33,7 @@ namespace H_ECK.GameElements
             {
                 Players[i].PerformMove(Board,GameDisplay);
 
-                GameDisplay.DisplayBoard(this);
+                GameDisplay.DisplayBoard(Board);
                 //DisplayAttackers(Board.Fields[4][4]);
 
                 i = i ^ 1;

@@ -14,8 +14,8 @@ namespace H_ECK.Pieces
             : base(white)
         {
             if (white)
-                Symbol = 'Q';
-            else Symbol = 'q';
+                Symbol = (char)Symbols.WhiteQueen;
+            else Symbol = (char)Symbols.BlackQueen;
         }
 
         public override bool ValidMove(Move move, Board board)

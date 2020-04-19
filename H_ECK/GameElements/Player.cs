@@ -27,8 +27,8 @@ namespace H_ECK.GameElements
 
             do
             {
-                display.DisplayMessage("Please enter your move " +
-                   "in the following format: e4 e6\n");
+                display.DisplayMessage(@"Enter your move in the following format:" +
+                    " e4 e6 or 0-0 (Short castling) or 0-0-0 (Long castling)");
                 coordinates = Console.ReadLine().ToLower();
 
                 Regex regex = new Regex(@"[a-h][1-8]\s[a-h][1-8]");
@@ -50,20 +50,18 @@ namespace H_ECK.GameElements
             if (White)
                 turn = "White";
 
-            display.DisplayMessage("\nPlayer turn: " + turn + "\n");
+            display.DisplayMessage("\nPlayer turn: " + turn);
             char[] coordinates = ReadInput(display).ToCharArray();
             if (coordinates[0] == '0')
             {
                 if (coordinates.Length == 3)
                 {
-                    display.DisplayMessage("Short castling.\n");
                     if (White)
                         return new ShortCastling(new Field(0, 4, null), new Field(0, 6, null));
                     else return new ShortCastling(new Field(7, 4, null), new Field(7, 6, null));
                 }
                 else
                 {
-                    display.DisplayMessage("Long castling.\n");
                     if (White)
                         return new LongCastling(new Field(0, 4, null), new Field(0, 2, null));
                     else return new LongCastling(new Field(7, 4, null), new Field(7, 2, null));
@@ -84,11 +82,13 @@ namespace H_ECK.GameElements
 
         public Move PerformMove(Board board, IGameDisplay display)
         {
-            Move m;
-            do
+            Move m = MoveFromInput(display);
+            while (!Validator.TryMove(board, m, White, display))
             {
+                display.DisplayBoard(board);
+                display.DisplayMessage("Invalid move.");
                 m = MoveFromInput(display);
-            } while (!Validator.TryMove(board, m, White, display));
+            }
 
             board.Fields[m.Start.X][m.Start.Y].Piece.Move(m, board);
             Validator.EnPassant = false;

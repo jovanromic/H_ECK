@@ -14,8 +14,8 @@ namespace H_ECK.Pieces
             :base(white)
         {
             if (white)
-                Symbol = 'N';
-            else Symbol = 'n';
+                Symbol = (char)Symbols.WhiteKnight;
+            else Symbol = (char)Symbols.BlackKnight;
         }
 
         public override bool ValidMove(Move move, Board board)

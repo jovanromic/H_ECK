@@ -16,8 +16,8 @@ namespace H_ECK.Pieces
             : base(white)
         {
             if (white)
-                Symbol = 'R';
-            else Symbol = 'r';
+                Symbol = (char)Symbols.WhiteRook;
+            else Symbol = (char)Symbols.BlackRook;
             HasMoved = false;
         }
 

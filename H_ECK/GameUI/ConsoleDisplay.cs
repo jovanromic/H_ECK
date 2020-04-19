@@ -1,4 +1,5 @@
-﻿using H_ECK.GameElements;
+﻿using H_ECK.BoardElements;
+using H_ECK.GameElements;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,23 +13,33 @@ namespace H_ECK.GameUI
         public ConsoleDisplay()
         {
             Console.InputEncoding = Encoding.Unicode;
-            Console.OutputEncoding = Encoding.ASCII;
+            Console.OutputEncoding = Encoding.Unicode;
+            Console.BackgroundColor = ConsoleColor.White;
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.Clear();
 
         }
-        public void DisplayBoard(Game game)
+        public void DisplayBoard(Board board)
         {
             Console.WriteLine("   ________________________________");
             for (int i = 7; i >= 0; i--)
             {
+
                 Console.Write(" {0} ", i + 1);
+
                 for (int j = 0; j < 8; j++)
                 {
-                    if (game.Board.Fields[i][j].Piece != null)
-                        Console.Write("| {0} ", game.Board.Fields[i][j].Piece.Symbol);
+                    if (board.Fields[i][j].Piece != null)
+                        Console.Write("| {0} ", board.Fields[i][j].Piece.Symbol);
                     else
-                        Console.Write("|   ");
+                    {
+                        Console.Write(@"|   ");
+                    }
+
                 }
+
                 Console.WriteLine("|\n   |___|___|___|___|___|___|___|___|");
+
             }
             Console.WriteLine("     A   B   C   D   E   F   G   H\n");
         }

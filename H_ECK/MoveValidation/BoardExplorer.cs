@@ -1,4 +1,6 @@
 ﻿using H_ECK.BoardElements;
+using H_ECK.GameElements;
+using H_ECK.GameUI;
 using H_ECK.Pieces;
 using System;
 using System.Collections.Generic;
@@ -291,7 +293,8 @@ namespace H_ECK.MoveValidation
 
             for (int i = -1; i <= 1; i = i + 2)
             {
-                if (board.Fields[f.X + coef][f.Y + i].Piece != null &&
+                if (WithinBoundaries(f.X + coef,f.Y+i) &&
+                    board.Fields[f.X + coef][f.Y + i].Piece != null &&
                     board.Fields[f.X + coef][f.Y + i].Piece.GetType().Equals(pawn) &&
                     board.Fields[f.X + coef][f.Y + i].Piece.White == opposingPieceWhite)
                     attackers.Add(board.Fields[f.X + coef][f.Y + i]);
@@ -372,13 +375,63 @@ namespace H_ECK.MoveValidation
 
         public static bool CanBlockAttacker(Board board, Field attackerField, bool white)
         {
-            //todo
-            return false;
+            //ispitati da li neka moja figura napada polje na putu od kralja do napadaca
+            //legalan potez
+            List<Field> allDefenders = new List<Field>();
             if (new Knight(true).GetType().Equals(attackerField.Piece.GetType()))
                 return false;
             else
             {
+                int coef = white ? 0 : 1;
+                int attackerX = attackerField.X;
+                int attackerY = attackerField.Y;
+                int kingX = board.CurrentKingFields[coef].X;
+                int kingY = board.CurrentKingFields[coef].Y;
+                //lista svih polja od kralja do napadacke figure ukljucujuci i napadaca
+                //ako napadamo neko od tih polja, sah je blokiran ili napadac pojeden
+                List<Field> path = new List<Field>();
 
+                if (attackerY == kingY && attackerX > kingX)
+                    path = ExploreNorth(board, board.CurrentKingFields[coef], attackerField);
+
+                if (attackerY == kingY && attackerX < kingX)
+                    path = ExploreSouth(board, board.CurrentKingFields[coef], attackerField);
+
+                if (attackerY > kingY && attackerX == kingX)
+                    path = ExploreEast(board, board.CurrentKingFields[coef], attackerField);
+
+                if (attackerY < kingY && attackerX == kingX)
+                    path = ExploreWest(board, board.CurrentKingFields[coef], attackerField);
+
+                if (attackerY > kingY && attackerX > kingX)
+                    path = ExploreNorthEast(board, board.CurrentKingFields[coef], attackerField);
+
+                if (attackerY < kingY && attackerX > kingX)
+                    path = ExploreNorthWest(board, board.CurrentKingFields[coef], attackerField);
+
+                if (attackerY > kingY && attackerX < kingX)
+                    path = ExploreSouthEast(board, board.CurrentKingFields[coef], attackerField);
+
+                if (attackerY < kingY && attackerX < kingX)
+                    path = ExploreSouthWest(board, board.CurrentKingFields[coef], attackerField);
+
+
+
+                for (int i = 0; i < path.Count; i++)
+                {
+                    List<Field> fieldDefenders = FieldAttackers(board, path[i], white);
+                    if (fieldDefenders.Count > 0)
+                    {
+                        for (int j = 0; j < fieldDefenders.Count; j++)
+                        {
+                            //ispituje se validnost poteza od branioca do polja na putu path
+                            Move defendingMove = new Move(fieldDefenders[j], path[i]);
+                            if (Validator.TryMove(board, defendingMove, white, new ConsoleDisplay()))
+                                return true;
+                        }
+                    }
+                }
+                return false;
             }
         }
 

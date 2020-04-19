@@ -13,6 +13,35 @@ namespace H_ECK.Pieces
         public bool White { get; set; }
         public char Symbol { get; set; }
 
+        public enum Symbols
+        {
+            WhiteRook = '♖',
+            BlackRook = '♜',
+            WhiteQueen = '♕',
+            BlackQueen = '♛',
+            WhitePawn = '♙',
+            BlackPawn = '♟',
+            WhiteKnight = '♘',
+            BlackKnight = '♞',
+            WhiteKing = '♔',
+            BlackKing = '♚',
+            WhiteBishop = '♗',
+            BlackBishop = '♝'
+
+            //WhiteRook = 'R',
+            //BlackRook = 'r',
+            //WhiteQueen = 'Q',
+            //BlackQueen = 'q',
+            //WhitePawn = 'P',
+            //BlackPawn = 'p',
+            //WhiteKnight = 'N',
+            //BlackKnight = 'n',
+            //WhiteKing = 'K',
+            //BlackKing = 'k',
+            //WhiteBishop = 'B',
+            //BlackBishop = 'b'
+        }
+
         public abstract bool ValidMove(Move move, Board board);
         public virtual void Move(Move move,Board board)
         {

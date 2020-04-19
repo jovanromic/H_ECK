@@ -27,13 +27,13 @@ namespace H_ECK.MoveValidation
 
             if (board.Fields[startX][startY].Piece == null)
             {
-                display.DisplayMessage("Invalid move! No piece selected.\n");
+                display.DisplayMessage("No piece selected.\n");
                 return false;
             }
 
             else if (startX == endX && startY == endY)
             {
-                display.DisplayMessage("Invalid move! End field must differ from start field.");
+                display.DisplayMessage("End field must differ from start field.");
                 return false;
             }
 
@@ -46,17 +46,13 @@ namespace H_ECK.MoveValidation
             else if (board.Fields[endX][endY].Piece != null &&
                 board.Fields[endX][endY].Piece.White == white)
             {
-                display.DisplayMessage("Invalid move! Overlapping pieces.");
+                display.DisplayMessage("Overlapping pieces.");
                 return false;
             }
 
             else
-            {
-                bool valid = board.Fields[startX][startY].Piece.ValidMove(m, board);
-                if (!valid)
-                    display.DisplayMessage("Invalid move!");
-                return valid;
-            }
+                return board.Fields[startX][startY].Piece.ValidMove(m, board);
+            
         }
 
         public static Piece SelectPromotionPiece(Board board, int startX, int startY, bool white)
@@ -174,7 +170,7 @@ namespace H_ECK.MoveValidation
                 testBoard.Fields[move.Start.X][move.Start.Y].Piece.Move(move, testBoard);
                 if (KingAttackers(testBoard, white).Count != 0)
                 {
-                    display.DisplayMessage("Invalid move! King is in Check.");
+                    //display.DisplayMessage("Invalid move! King is in Check.");
                     return false;
                 }
                 else return true;
@@ -191,8 +187,6 @@ namespace H_ECK.MoveValidation
         }
         public static bool CheckMate(Board board, int i)
         {
-            //todo
-            return false;
             //ako je kralj u sahu:
             //1. proveriti ima li slobodnih nenapadnutih polja => nije mat
             //2. proveriti da li je moguce nositi napadacku figuru
@@ -200,10 +194,8 @@ namespace H_ECK.MoveValidation
             //proveriti da li je kralj i dalje u sahu nakon 2. ili 3.
             //ako vise figura daje sah, jedina opcija je kretanje kraljem - Escape
             bool white = (i == 0);
-            bool canEscape = false;
-            bool canEatAttacker = false;
-            bool canBlockAttacker = false;
-            bool stillInCheck = true;
+
+            List<Field> blockers = new List<Field>();
 
             List<Field> kingAttackers = KingAttackers(board, white);
             if (kingAttackers.Count == 0)
@@ -217,26 +209,31 @@ namespace H_ECK.MoveValidation
                 else if (kingAttackers.Count == 1)
                 {
                     //tacno jedna figura daje sah, ispituje se mogucnost nosenja te figure
-                    //traze se napadaci figure koja daje sah
+                    //traze se napadaci figure koja daje sah - defenders
 
                     List<Field> defenders = BoardExplorer.FieldAttackers(board,
                         kingAttackers[0], white);
                     if (defenders.Count > 0)
-                        canEatAttacker = true;
-
-                    //nosenje napadajuce figure je nemoguce, ispitati blokiranje
-                    else
                     {
-                        canBlockAttacker = BoardExplorer.CanBlockAttacker(board,
-                            kingAttackers[0], white);
+                        for (int j = 0; j < defenders.Count; j++)
+                        {
+                            Move defendingMove = new Move(defenders[j], kingAttackers[0]);
+                            //ako neki defender moze da nosi attackera bez ostavljanja kralja u sahu
+                            //nije mat
+                            if (TryMove(board, defendingMove, white, new ConsoleDisplay()))
+                                return false;
+                        }
                     }
+                    //nosenje napadajuce figure je nemoguce, ispitati blokiranje
+                    //validnost se ispituje unutar funkcije
+                    else if (BoardExplorer.CanBlockAttacker(board,
+                            kingAttackers[0], white))
+                        return false;       
                 }
-                //ako je moguce nosenje ili blokiranje, proveriti da li je nakon toga i dalje sah
-                if (canEatAttacker || canBlockAttacker)
-                {
-                    //try move
-                }
-
+                //nemoguce odigrati validan potez kraljem
+                //nemoguce blokirati ili nositi napadacku figuru bez ostavljanja kralja u sahu
+                //mat je
+                return true;
             }
         }
     }
