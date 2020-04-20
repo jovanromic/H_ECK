@@ -59,10 +59,17 @@ namespace H_ECK.GameUI
             TimeSpan time = TimeSpan.FromSeconds(seconds);
             string formattedTime = time.ToString(@"mm\:ss");
 
-            int previousCursorLeft = Console.CursorLeft;
-            Console.SetCursorPosition(25, Console.CursorTop - 3);
-            Console.Write("Time left: " + formattedTime);
-            Console.SetCursorPosition(previousCursorLeft, Console.CursorTop + 3);
+
+            //ovaj kod stampa preostalo vreme za potez
+            //zbog pomeranja kursora moguce su greske pri unosu i stampanju drugih elemenata
+
+            //int previousCursorLeft = Console.CursorLeft;
+            //Console.SetCursorPosition(25, Console.CursorTop - 3);
+            //Console.Write("Time left: " + formattedTime);
+            //Console.SetCursorPosition(previousCursorLeft, Console.CursorTop + 3);
+
+            //workaround za stampanje preostalog vremena, ne interferira sa konzolom
+            Console.Title = "H-ECK Chess Game ---- Time left: "+formattedTime;
         }
 
         public void EndGame()

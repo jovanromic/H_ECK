@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{7EFF153B-ADF6-4828-A203-6B674854DAC3}</ProjectGuid>
-    <OutputType>Exe</OutputType>
-    <RootNamespace>H_ECK</RootNamespace>
-    <AssemblyName>H_ECK</AssemblyName>
+    <ProjectGuid>{7809659D-B49C-475A-B3AF-1873C9B6E335}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>H_Chess</RootNamespace>
+    <AssemblyName>H_Chess</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -33,50 +33,51 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>H_ECK.Program</StartupObject>
-  </PropertyGroup>
-  <PropertyGroup>
-    <ApplicationIcon>Blackvariant-Button-Ui-System-Apps-Chess.ico</ApplicationIcon>
+    <StartupObject>H_Chess.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BoardElements\Board.cs" />
-    <Compile Include="BoardElements\Field.cs" />
-    <Compile Include="GameElements\Clock.cs" />
-    <Compile Include="GameElements\Game.cs" />
-    <Compile Include="GameElements\LongCastling.cs" />
-    <Compile Include="GameElements\Move.cs" />
-    <Compile Include="GameElements\Player.cs" />
-    <Compile Include="GameElements\ShortCastling.cs" />
-    <Compile Include="GameUI\ConsoleDisplay.cs" />
-    <Compile Include="GameUI\IGameDisplay.cs" />
-    <Compile Include="MoveValidation\BoardExplorer.cs" />
-    <Compile Include="MoveValidation\Validator.cs" />
-    <Compile Include="Pieces\Bishop.cs" />
-    <Compile Include="Pieces\King.cs" />
-    <Compile Include="Pieces\Knight.cs" />
-    <Compile Include="Pieces\Pawn.cs" />
-    <Compile Include="Pieces\Piece.cs" />
-    <Compile Include="Pieces\Queen.cs" />
-    <Compile Include="Pieces\Rook.cs" />
+    <Compile Include="MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Blackvariant-Button-Ui-System-Apps-Chess.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

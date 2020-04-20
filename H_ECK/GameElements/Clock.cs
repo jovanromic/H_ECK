@@ -24,7 +24,7 @@ namespace H_ECK.GameElements
 
         private void Timer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            GameDisplay.DisplayTimeLeft(Seconds);          
+            GameDisplay.DisplayTimeLeft(Seconds);
             if (Seconds == 0)
             {
                 Timer.Stop();

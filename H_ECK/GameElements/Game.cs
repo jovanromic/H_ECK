@@ -30,9 +30,9 @@ namespace H_ECK.GameElements
             GameDisplay.DisplayBoard(Board);
             int i = 0;
 
-            while (!Validator.CheckMate(Board,i))
+            while (!Validator.CheckMate(Board, i))
             {
-                Players[i].PerformMove(Board,GameDisplay);
+                Players[i].PerformMove(Board, GameDisplay);
 
                 GameDisplay.DisplayBoard(Board);
                 Clock.Reset();

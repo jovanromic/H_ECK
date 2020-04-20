@@ -17,7 +17,7 @@ namespace H_ECK.GameElements
 
         public string ReadInput(IGameDisplay display)
         {
-            string coordinates;
+            string coordinates = "";
             Match match, shortMatch, longMatch;
             //Ocekuje se oblik zadavanja: "e4 e6"
 
@@ -27,7 +27,7 @@ namespace H_ECK.GameElements
                     "--> e4 e6 or 0-0 (Short castling) or 0-0-0 (Long castling)");
                 coordinates = Console.ReadLine().ToLower();
 
-                Regex regex = new Regex(@"[a-h][1-8]\s[a-h][1-8]");
+                Regex regex = new Regex(@"^[a-h][1-8]\s[a-h][1-8]");
                 Regex shortCastling = new Regex(@"0-0");
                 Regex longCastling = new Regex(@"0-0-0");
 
