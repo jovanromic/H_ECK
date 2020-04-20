@@ -48,13 +48,14 @@
   <ItemGroup>
     <Compile Include="BoardElements\Board.cs" />
     <Compile Include="BoardElements\Field.cs" />
+    <Compile Include="GameElements\Clock.cs" />
     <Compile Include="GameElements\Game.cs" />
     <Compile Include="GameElements\LongCastling.cs" />
     <Compile Include="GameElements\Move.cs" />
     <Compile Include="GameElements\Player.cs" />
     <Compile Include="GameElements\ShortCastling.cs" />
     <Compile Include="GameUI\ConsoleDisplay.cs" />
-    <Compile Include="GameUI\GameDisplay.cs" />
+    <Compile Include="GameUI\IGameDisplay.cs" />
     <Compile Include="MoveValidation\BoardExplorer.cs" />
     <Compile Include="MoveValidation\Validator.cs" />
     <Compile Include="Pieces\Bishop.cs" />

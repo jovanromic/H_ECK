@@ -23,8 +23,8 @@ namespace H_ECK.GameElements
 
             do
             {
-                display.DisplayMessage(@"Enter your move in the following format:" +
-                    " e4 e6 or 0-0 (Short castling) or 0-0-0 (Long castling)");
+                display.DisplayMessage("* Enter your move in the following format:\n" +
+                    "--> e4 e6 or 0-0 (Short castling) or 0-0-0 (Long castling)");
                 coordinates = Console.ReadLine().ToLower();
 
                 Regex regex = new Regex(@"[a-h][1-8]\s[a-h][1-8]");
@@ -46,7 +46,7 @@ namespace H_ECK.GameElements
             if (White)
                 turn = "White";
 
-            display.DisplayMessage("\nPlayer turn: " + turn);
+            display.DisplayMessage("\n* Player turn: " + turn + @" ***");
             char[] coordinates = ReadInput(display).ToCharArray();
             if (coordinates[0] == '0')
             {

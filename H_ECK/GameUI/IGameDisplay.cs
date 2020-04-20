@@ -6,5 +6,6 @@ namespace H_ECK.GameUI
     {
         void DisplayBoard(Board board);
         void DisplayMessage(string message);
+        void DisplayTimeLeft(int seconds);
     }
 }

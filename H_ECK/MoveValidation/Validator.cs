@@ -13,6 +13,7 @@ namespace H_ECK.MoveValidation
         public static bool EnPassant = false;
         public static bool Promotion = false;
         public static Piece PromotionPiece = null;
+        //public static bool TimeIsUp = false;
 
 
         public static bool ValidMove(Board board, Move m, bool white, IGameDisplay display)

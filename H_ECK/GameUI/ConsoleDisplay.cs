@@ -12,7 +12,10 @@ namespace H_ECK.GameUI
             Console.OutputEncoding = Encoding.Unicode;
             Console.BackgroundColor = ConsoleColor.White;
             Console.ForegroundColor = ConsoleColor.Black;
+            Console.Title = "H_ECK Chess";
+            Console.CursorVisible = false;
             Console.Clear();
+            
 
         }
         public void DisplayBoard(Board board)
@@ -43,6 +46,17 @@ namespace H_ECK.GameUI
         public void DisplayMessage(string message)
         {
             Console.WriteLine(message);
+        }
+
+        public void DisplayTimeLeft(int seconds)
+        {
+            TimeSpan time = TimeSpan.FromSeconds(seconds);
+            string formattedTime = time.ToString(@"mm\:ss");
+
+            int previousCursorLeft = Console.CursorLeft;
+            Console.SetCursorPosition(25, Console.CursorTop - 3);
+            Console.Write("Time left: " + formattedTime);
+            Console.SetCursorPosition(previousCursorLeft, Console.CursorTop + 3);
         }
     }
 }

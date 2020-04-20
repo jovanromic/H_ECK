@@ -11,6 +11,7 @@ namespace H_ECK.GameElements
         public Board Board { get; set; }
         public Player[] Players { get; set; }
         public IGameDisplay GameDisplay { get; set; }
+        public Clock Clock{ get; set; }
 
 
         public Game()
@@ -20,6 +21,7 @@ namespace H_ECK.GameElements
             Players[0] = new Player(true);
             Players[1] = new Player(false);
             GameDisplay = new ConsoleDisplay();
+            Clock = new Clock();
         }
 
         public void StartGame()
@@ -29,11 +31,15 @@ namespace H_ECK.GameElements
             int i = 0;
 
 
+
             while (!Validator.CheckMate(Board,i))
             {
+
                 Players[i].PerformMove(Board,GameDisplay);
 
                 GameDisplay.DisplayBoard(Board);
+                Clock.Reset();
+                Clock.Start();
                 //DisplayAttackers(Board.Fields[4][4]);
 
                 i = i ^ 1;
