@@ -15,7 +15,6 @@ namespace H_ECK.GameUI
             //Console.BackgroundColor = ConsoleColor.White;
             //Console.ForegroundColor = ConsoleColor.Black;
             Console.Title = "H_ECK Chess";
-            Console.CursorVisible = false;
             Console.Clear();
             
 

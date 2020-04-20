@@ -46,7 +46,7 @@ namespace H_ECK.GameElements
             if (White)
                 turn = "White";
 
-            display.DisplayMessage("\n* Player turn: " + turn + @" ***");
+            display.DisplayMessage("\n* Player turn: " + turn);
             char[] coordinates = ReadInput(display).ToCharArray();
             if (coordinates[0] == '0')
             {
