@@ -45,7 +45,7 @@ namespace H_ECK.BoardElements
 
         public void Initialize()
         {
-            ////poredjati figure
+            //////poredjati figure
             for (int i = 0; i < 8; i++)
             {
                 Fields[1][i].Piece = new Pawn(true);
@@ -100,7 +100,7 @@ namespace H_ECK.BoardElements
             //Fields[6][3].Piece = new Pawn(false);
             //////////////////////////////////////////////////////////
 
-            //Testiranje mata ////////////////////////////////////////
+            ////Testiranje mata ////////////////////////////////////////
             //Fields[3][2].Piece = new Queen(true);
             //Fields[6][1].Piece = new Rook(true);
             //Fields[7][2].Piece = new Rook(true);
@@ -113,7 +113,7 @@ namespace H_ECK.BoardElements
             //Fields[5][7].Piece = new Pawn(false);
             //Fields[6][5].Piece = new Pawn(false);
 
-            //Fields[1][5].Piece = new Bishop(false);
+            ////Fields[1][5].Piece = new Bishop(false);
 
             //CurrentKingFields[0] = Fields[1][4];
             //CurrentKingFields[1] = Fields[6][6];

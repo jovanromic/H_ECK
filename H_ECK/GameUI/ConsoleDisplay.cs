@@ -1,6 +1,7 @@
 ﻿using H_ECK.BoardElements;
 using System;
 using System.Text;
+using System.Threading;
 
 namespace H_ECK.GameUI
 {
@@ -8,10 +9,11 @@ namespace H_ECK.GameUI
     {
         public ConsoleDisplay()
         {
-            Console.InputEncoding = Encoding.Unicode;
-            Console.OutputEncoding = Encoding.Unicode;
-            Console.BackgroundColor = ConsoleColor.White;
-            Console.ForegroundColor = ConsoleColor.Black;
+            Console.InputEncoding = Encoding.Default;
+            Console.OutputEncoding = Encoding.Default;
+            //fancy izgled
+            //Console.BackgroundColor = ConsoleColor.White;
+            //Console.ForegroundColor = ConsoleColor.Black;
             Console.Title = "H_ECK Chess";
             Console.CursorVisible = false;
             Console.Clear();
@@ -61,6 +63,12 @@ namespace H_ECK.GameUI
             Console.SetCursorPosition(25, Console.CursorTop - 3);
             Console.Write("Time left: " + formattedTime);
             Console.SetCursorPosition(previousCursorLeft, Console.CursorTop + 3);
+        }
+
+        public void EndGame()
+        {
+            Thread.Sleep(5000);
+            Environment.Exit(0);
         }
     }
 }

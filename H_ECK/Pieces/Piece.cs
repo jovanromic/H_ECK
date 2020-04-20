@@ -10,31 +10,31 @@ namespace H_ECK.Pieces
 
         public enum Symbols
         {
-            WhiteRook = '♖',
-            BlackRook = '♜',
-            WhiteQueen = '♕',
-            BlackQueen = '♛',
-            WhitePawn = '♙',
-            BlackPawn = '♟',
-            WhiteKnight = '♘',
-            BlackKnight = '♞',
-            WhiteKing = '♔',
-            BlackKing = '♚',
-            WhiteBishop = '♗',
-            BlackBishop = '♝'
+            //WhiteRook = '♖',
+            //BlackRook = '♜',
+            //WhiteQueen = '♕',
+            //BlackQueen = '♛',
+            //WhitePawn = '♙',
+            //BlackPawn = '♟',
+            //WhiteKnight = '♘',
+            //BlackKnight = '♞',
+            //WhiteKing = '♔',
+            //BlackKing = '♚',
+            //WhiteBishop = '♗',
+            //BlackBishop = '♝'
 
-            //WhiteRook = 'R',
-            //BlackRook = 'r',
-            //WhiteQueen = 'Q',
-            //BlackQueen = 'q',
-            //WhitePawn = 'P',
-            //BlackPawn = 'p',
-            //WhiteKnight = 'N',
-            //BlackKnight = 'n',
-            //WhiteKing = 'K',
-            //BlackKing = 'k',
-            //WhiteBishop = 'B',
-            //BlackBishop = 'b'
+            WhiteRook = 'R',
+            BlackRook = 'r',
+            WhiteQueen = 'Q',
+            BlackQueen = 'q',
+            WhitePawn = 'P',
+            BlackPawn = 'p',
+            WhiteKnight = 'N',
+            BlackKnight = 'n',
+            WhiteKing = 'K',
+            BlackKing = 'k',
+            WhiteBishop = 'B',
+            BlackBishop = 'b'
         }
 
         public abstract bool ValidMove(Move move, Board board);

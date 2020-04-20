@@ -27,8 +27,9 @@ namespace H_ECK.GameElements
             GameDisplay.DisplayTimeLeft(Seconds);          
             if (Seconds == 0)
             {
+                Timer.Stop();
                 GameDisplay.DisplayMessage("\nTime is up! Game over!");
-                Environment.Exit(0);
+                GameDisplay.EndGame();
             }
             Seconds--;
         }
@@ -40,6 +41,10 @@ namespace H_ECK.GameElements
         public void Reset()
         {
             Seconds = 300;
+        }
+        public void Stop()
+        {
+            Timer.Stop();
         }
 
     }
