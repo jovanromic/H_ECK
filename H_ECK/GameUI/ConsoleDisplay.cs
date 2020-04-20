@@ -38,6 +38,10 @@ namespace H_ECK.GameUI
                 }
 
                 Console.WriteLine("|\n   |___|___|___|___|___|___|___|___|");
+                //if (i % 2 == 0)
+                //    Console.WriteLine("|\n   |---|···|---|···|---|···|---|···|");
+                //else
+                //    Console.WriteLine("|\n   |···|---|···|---|···|---|···|---|");
 
             }
             Console.WriteLine("     A   B   C   D   E   F   G   H\n");
