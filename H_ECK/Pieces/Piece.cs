@@ -12,7 +12,7 @@ namespace H_ECK.Pieces
         {
             //Za prikaz unicode simbola sahovskih figura
             //Potrebno je promeniti font konzole na neki koji to podrzava, npr MS Gothic
-            
+
             //WhiteRook = '♖',
             //BlackRook = '♜',
             //WhiteQueen = '♕',

@@ -68,7 +68,7 @@ namespace H_ECK.MoveValidation
             {
                 display.DisplayMessage("Please enter a letter from the legend ");
                 input = Console.ReadLine().ToLower();
-                Regex regex = new Regex(@"[qrbn]");
+                Regex regex = new Regex(@"^[qrbn]");
                 match = regex.Match(input);
             } while (!match.Success);
 
