@@ -9,7 +9,9 @@ namespace H_ECK.MoveValidation
 {
     class BoardExplorer
     {
-        //pomocne funkcije za odredjivanje napadnutog polja
+        /// <summary>
+        /// Lista polja do prve protivnicke figure istocno od pocetnog polja
+        /// </summary>
         public static List<Field> ExploreEast(Board board, Field current, Field end)
         {
             List<Field> path = new List<Field>();
@@ -22,6 +24,9 @@ namespace H_ECK.MoveValidation
             return path;
         }
 
+        /// <summary>
+        /// Lista polja do prve figure zapadno od pocetnog polja
+        /// </summary>
         public static List<Field> ExploreWest(Board board, Field current, Field end)
         {
             List<Field> path = new List<Field>();
@@ -34,6 +39,9 @@ namespace H_ECK.MoveValidation
             return path;
         }
 
+        /// <summary>
+        /// Lista polja do prve figure severno od pocetnog polja
+        /// </summary>
         public static List<Field> ExploreNorth(Board board, Field current, Field end)
         {
             List<Field> path = new List<Field>();
@@ -46,6 +54,9 @@ namespace H_ECK.MoveValidation
             return path;
         }
 
+        /// <summary>
+        /// Lista polja do prve figure juzno od pocetnog polja
+        /// </summary>
         public static List<Field> ExploreSouth(Board board, Field current, Field end)
         {
             List<Field> path = new List<Field>();
@@ -58,6 +69,9 @@ namespace H_ECK.MoveValidation
             return path;
         }
 
+        /// <summary>
+        /// Lista polja do prve figure severoistocno od pocetnog polja
+        /// </summary>
         public static List<Field> ExploreNorthEast(Board board, Field current, Field end)
         {
             List<Field> path = new List<Field>();
@@ -76,6 +90,9 @@ namespace H_ECK.MoveValidation
             return path;
         }
 
+        /// <summary>
+        /// Lista polja do prve figure severozapadno od pocetnog polja
+        /// </summary>
         public static List<Field> ExploreNorthWest(Board board, Field current, Field end)
         {
             List<Field> path = new List<Field>();
@@ -94,6 +111,9 @@ namespace H_ECK.MoveValidation
             return path;
         }
 
+        /// <summary>
+        /// Lista polja do prve figure jugoistocno od pocetnog polja
+        /// </summary>
         public static List<Field> ExploreSouthEast(Board board, Field current, Field end)
         {
             List<Field> path = new List<Field>();
@@ -112,6 +132,9 @@ namespace H_ECK.MoveValidation
             return path;
         }
 
+        /// <summary>
+        /// Lista polja do prve figure jugozapadno od pocetnog polja
+        /// </summary>
         public static List<Field> ExploreSouthWest(Board board, Field current, Field end)
         {
             List<Field> path = new List<Field>();
@@ -130,10 +153,12 @@ namespace H_ECK.MoveValidation
             return path;
         }
 
+        /// <summary>
+        /// Pomocna funkcija: Da li figura moze da napadne sa svog polja
+        /// </summary>
         private static bool IsAttackingPiece(Field inTheWay, bool opponentPieceWhite, Type piece)
         {
-            //pomocna funkcija za ispitivanje figura koje se nadju na putu trazenja
-            //ako se na putu nadju protivnicka kraljica ili "piece" onda te figure napadaju polje
+            //ako se na putu nadju protivnicka kraljica ili "piece", onda te figure napadaju polje
 
             Type queen = new Queen(true).GetType();
             if (inTheWay.Piece != null && inTheWay.Piece.White == opponentPieceWhite &&
@@ -142,9 +167,12 @@ namespace H_ECK.MoveValidation
             return false;
         }
 
+        /// <summary>
+        /// Lista polja sa kojih dolazi napad po horizontalnom ili vertikalnom pravacu
+        /// </summary>
         private static List<Field> CrossAttacking(Board board, Field f, bool opponentPieceWhite)
         {
-            //ispituje da li postoji figura koja napada po horizontalnom ili vertikalnom pravacu
+             
             //to mogu biti kraljica i top pa se top prosledjuje kao "piece" u pomocnu f-ju
 
             Field inTheWay;
@@ -191,9 +219,11 @@ namespace H_ECK.MoveValidation
             return attackers;
         }
 
+        /// <summary>
+        /// Lista polja sa kojih dolazi napad po dijagonalama
+        /// </summary>
         private static List<Field> DiagonalAttacking(Board board, Field f, bool opponentPieceWhite)
         {
-            //ispituje napad po dijagonalama
             //u pomocnu funkciju se prosledjuje lovac
 
             Field inTheWay;
@@ -238,6 +268,9 @@ namespace H_ECK.MoveValidation
             return attackers;
         }
 
+        /// <summary>
+        /// Vraca polje sa kog napada kralj, ako napada
+        /// </summary>
         private static Field KingAttacking(Board board, Field f, bool opponentPieceWhite)
         {
             Type king = new King(true).GetType();
@@ -258,6 +291,9 @@ namespace H_ECK.MoveValidation
             return null;
         }
 
+        /// <summary>
+        /// Lista polja sa kojih dolazi napad od protivnickih skakaca
+        /// </summary>
         private static List<Field> KnightAttacking(Board board, Field f, bool opponentPieceWhite)
         {
             List<Field> attackers = new List<Field>();
@@ -281,6 +317,9 @@ namespace H_ECK.MoveValidation
             return attackers;
         }
 
+        /// <summary>
+        /// Lista polja sa kojih dolazi napad od protivnickih piona
+        /// </summary>
         private static List<Field> PawnAttacking(Board board, Field f, bool opposingPieceWhite)
         {
             int coef = opposingPieceWhite ? -1 : 1;
@@ -304,6 +343,9 @@ namespace H_ECK.MoveValidation
             return (x >= 0 && x < 8 && y >= 0 && y < 8);
         }
 
+        /// <summary>
+        /// Lista polja sa kojih dolazi napad na zadato polje
+        /// </summary>
         public static List<Field> FieldAttackers(Board board, Field f, bool opponentPieceWhite)
         {
             List<Field> attackers = new List<Field>();
@@ -328,6 +370,9 @@ namespace H_ECK.MoveValidation
             return attackers;
         }
 
+        /// <summary>
+        /// Da li je potez blokiran od strane neke druge figure
+        /// </summary>
         public static bool IsPathClear(Field inTheWay, Field end)
         {
             if (inTheWay == null)
@@ -342,6 +387,9 @@ namespace H_ECK.MoveValidation
             else return true;
         }
 
+        /// <summary>
+        /// Da li je neko polje oko kralja nenapadnuto
+        /// </summary>
         public static bool CanEscape(Board board, bool white)
         {
             int index = white ? 0 : 1;
@@ -362,18 +410,12 @@ namespace H_ECK.MoveValidation
                     }
             return false;
         }
-
-        //public static bool CanEatAttacker(Board board, Field attackerField, bool white)
-        //{
-        //    List<Field> defenders
-        //    //todo
-        //    //return false;
-        //}
-
+        
+        /// <summary>
+        /// Da li postoji legalan potez koji blokira sah
+        /// </summary>
         public static bool CanBlockAttacker(Board board, Field attackerField, bool white)
         {
-            //ispitati da li neka moja figura napada polje na putu od kralja do napadaca
-            //legalan potez
             List<Field> allDefenders = new List<Field>();
             if (new Knight(true).GetType().Equals(attackerField.Piece.GetType()))
                 return false;
@@ -431,6 +473,5 @@ namespace H_ECK.MoveValidation
                 return false;
             }
         }
-
     }
 }

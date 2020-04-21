@@ -45,7 +45,7 @@ namespace H_ECK.BoardElements
 
         public void Initialize()
         {
-            //////poredjati figure
+            //raspored za pocetak partije
             for (int i = 0; i < 8; i++)
             {
                 Fields[1][i].Piece = new Pawn(true);
@@ -98,6 +98,9 @@ namespace H_ECK.BoardElements
             //Fields[1][3].Piece = new Pawn(false);
             //Fields[4][4].Piece = new Pawn(true);
             //Fields[6][3].Piece = new Pawn(false);
+
+            //CurrentKingFields[0] = new Field(Fields[0][4]);
+            //CurrentKingFields[1] = new Field(Fields[7][4]);
             //////////////////////////////////////////////////////////
 
             ////Testiranje mata ////////////////////////////////////////

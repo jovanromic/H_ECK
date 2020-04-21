@@ -10,6 +10,9 @@ namespace H_ECK.Pieces
 
         public enum Symbols
         {
+            //Za prikaz unicode simbola sahovskih figura
+            //Potrebno je promeniti font konzole na neki koji to podrzava, npr MS Gothic
+            
             //WhiteRook = '♖',
             //BlackRook = '♜',
             //WhiteQueen = '♕',
@@ -37,7 +40,14 @@ namespace H_ECK.Pieces
             BlackBishop = 'b'
         }
 
+        /// <summary>
+        /// Da li je potez u skladu sa pravlilima kretanja figure
+        /// </summary>
         public abstract bool ValidMove(Move move, Board board);
+
+        /// <summary>
+        /// Pomeranje figure sa pocetnog na ciljno polje i eventualno nosenje
+        /// </summary>
         public virtual void Move(Move move,Board board)
         {
             board.Fields[move.End.X][move.End.Y].Piece =

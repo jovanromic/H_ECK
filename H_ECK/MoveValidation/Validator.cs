@@ -13,9 +13,10 @@ namespace H_ECK.MoveValidation
         public static bool EnPassant = false;
         public static bool Promotion = false;
         public static Piece PromotionPiece = null;
-        //public static bool TimeIsUp = false;
 
-
+        /// <summary>
+        /// Da li je potez validan tj. legalan
+        /// </summary>
         public static bool ValidMove(Board board, Move m, bool white, IGameDisplay display)
         {
             int startX = m.Start.X;
@@ -49,6 +50,8 @@ namespace H_ECK.MoveValidation
             }
 
             else
+                /*u funkciju se ulazi sa pretpostavkom da ukoliko postoji figura na ciljnom polju,
+                ona mora biti protivnicka*/
                 return board.Fields[startX][startY].Piece.ValidMove(m, board);
             
         }
@@ -87,8 +90,6 @@ namespace H_ECK.MoveValidation
                     p = new Knight(white);
                     break;
             }
-
-            //board.Fields[startX][startY].Piece = p;
             return p;
         }
 
@@ -156,9 +157,12 @@ namespace H_ECK.MoveValidation
             }
         }
 
+        /// <summary>
+        /// Ispitivanje pseudo-legalnog poteza na kopiji table
+        /// Nakon poteza kralj ne sme ostati u sahu.
+        /// </summary>
         public static bool TryMove(Board originalBoard, Move move, bool white, IGameDisplay display)
         {
-            //ispitivanje pseudo-legalnog poteza na kopiji table
             Board testBoard = new Board(originalBoard);
             if (!ValidMove(testBoard, move, white, display))
                 return false;
@@ -168,13 +172,16 @@ namespace H_ECK.MoveValidation
                 testBoard.Fields[move.Start.X][move.Start.Y].Piece.Move(move, testBoard);
                 if (KingAttackers(testBoard, white).Count != 0)
                 {
-                    //display.DisplayMessage("Invalid move! King is in Check.");
+                    display.DisplayMessage("King is in Check.");
                     return false;
                 }
                 else return true;
             }
         }
 
+        /// <summary>
+        /// Lista polja sa kojih dolazi napad na kralja
+        /// </summary>
         public static List<Field> KingAttackers(Board board, bool white)
         {
             int index = white ? 0 : 1;
@@ -183,6 +190,10 @@ namespace H_ECK.MoveValidation
 
             return attackers;
         }
+
+        /// <summary>
+        /// Ispitivanje uslova za mat
+        /// </summary>
         public static bool CheckMate(Board board, int i)
         {
             //ako je kralj u sahu:

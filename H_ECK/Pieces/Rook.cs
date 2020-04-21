@@ -7,7 +7,9 @@ namespace H_ECK.Pieces
 {
     class Rook : Piece
     {
+        //potrebno zbog ispitivanja validnosti rokade
         public bool HasMoved { get; set; }
+
         public Rook(bool white)
             : base(white)
         {

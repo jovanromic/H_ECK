@@ -16,6 +16,9 @@ namespace H_ECK.Pieces
             else Symbol = (char)Symbols.BlackPawn;
         }
 
+        /// <summary>
+        /// Obuhvata i promociju i en-passant kao specijalne slucajeve kretanja
+        /// </summary>
         public override bool ValidMove(Move move, Board board)
         {
             int startX = move.Start.X;
@@ -133,7 +136,6 @@ namespace H_ECK.Pieces
                             if (endY == board.LastMove.End.Y && endX == (x + coef))
                             {
                                 //jedi protivnickog piona
-                                //board.Fields[x][board.LastMove.End.Y].Piece = null;
                                 return true;
                             }
                         }
